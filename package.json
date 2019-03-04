@@ -1,13 +1,13 @@
 {
-  "name": "gatsby-source-json-api",
-  "version": "0.0.1",
-  "description": "Source data from any API and transform them to Gatsby-Nodes.",
+  "name": "gatsby-source-custom-api",
+  "version": "0.0.2",
+  "description": "Source data from any API and transform it into Gatsby-nodes.",
   "main": "index.js",
   "author": "Andreas Faust",
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AndreasFaust/gatsby-source-json-api"
+    "url": "https://github.com/AndreasFaust/gatsby-source-custom-api"
   },
   "keywords": [
     "gatsby",

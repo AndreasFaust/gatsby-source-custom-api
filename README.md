@@ -1,6 +1,6 @@
-# Gatsby Source JSON API
+# Gatsby Source Custom API
 
-**Gatsby Source JSON API** helps you sourcing data from any API and transform it to Gatsby-Nodes. Define keys you want to be transformed to image-nodes and use them with Gatsy Image.
+**Gatsby Source Custom API** helps you sourcing data from any API and transform it into Gatsby-nodes. Define keys you want to be transformed to image-nodes and use them with Gatsy Image.
 
 ## Getting Started
 
