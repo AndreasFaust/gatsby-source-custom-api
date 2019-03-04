@@ -1,5 +1,4 @@
 
-// const path = require('path')
 const fetch = require('node-fetch')
 const createNodeEntities = require('./createNodeEntities')
 const flattenEntities = require('./utils/flattenEntities')

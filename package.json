@@ -1,22 +1,27 @@
 {
-    "name": "gatsby-source-processwire",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "author": "",
-    "dependencies": {
-        "gatsby-source-filesystem": "^2.0.12",
-        "lodash": "^4.17.11",
-        "node-fetch": "^2.3.0",
-        "query-string": "^6.2.0"
-    },
-    "devDependencies": {
-        "babel-cli": "^6.24.1",
-        "babel-plugin-transform-async-to-generator": "^6.24.1",
-        "babel-plugin-transform-object-rest-spread": "^6.23.0",
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-preset-env": "^1.6.0",
-        "pre-commit": "^1.2.2",
-        "prettier": "^1.5.3"
-    }
+  "name": "gatsby-source-json-api",
+  "version": "0.0.1",
+  "description": "Source data from any API and transform them to Gatsby-Nodes.",
+  "main": "index.js",
+  "author": "Andreas Faust",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AndreasFaust/gatsby-source-json-api"
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "source",
+    "api",
+    "json",
+    "image"
+  ],
+  "dependencies": {
+    "gatsby-source-filesystem": "^2.0.12",
+    "lodash": "^4.17.11",
+    "node-fetch": "^2.3.0",
+    "query-string": "^6.2.0"
+  },
+  "devDependencies": {}
 }
