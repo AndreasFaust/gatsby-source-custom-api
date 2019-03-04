@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-custom-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Source data from any API and transform it into Gatsby-nodes.",
   "main": "index.js",
   "author": "Andreas Faust",

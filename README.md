@@ -6,16 +6,16 @@
 
 1. Install the package with **npm** or **yarn**
 
-   `npm install gatsby-source-json-api`
+   `npm install gatsby-source-custom-api`
 
-   `yarn add gatsby-source-json-api`
+   `yarn add gatsby-source-custom-api`
 
 2. Add to plugins in your gatsby-config.js
 
 ```javascript
 module.exports = {
     {
-      resolve: 'gatsby-source-json-api',
+      resolve: 'gatsby-source-custom-api',
       options: {
         url: {
           development: 'http://your-local-api.dev',
@@ -98,4 +98,4 @@ export const query = graphql`
 Every contribution is very much appreciated.
 Feel free to file bugs, feature- and pull-requests.
 
-**If this plugin is helpful for you, star it on [GitHub](https://github.com/AndreasFaust/gatsby-source-json-api).**
+**If this plugin is helpful for you, star it on [GitHub](https://github.com/AndreasFaust/gatsby-source-custom-api).**
