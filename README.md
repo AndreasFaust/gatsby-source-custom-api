@@ -34,7 +34,7 @@ module.exports = {
 | rootKey   | string           | `Optional.` Name your API.                                                                                                                                                                     |
 | imageKeys | array            | Define the keys of image-objects you want to transform to image-nodes, that can be used with Gatsby Image. This objects need to have a key called `url` as image-source. Default: `['image']`. |
 
-### Transform Nodes to Pages:
+### Transform Nodes to Pages
 
 Here's a sample of how you use the required nodes to automatically generate pages: Insert the following code into the file `gatsby-node.js`. The sample key here is an array called `posts`. All array-elements can be required in GraphQl via `allPosts`.
 
@@ -68,6 +68,29 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   )
 }
+```
+
+In your `pages/post.js` you can require the data like so:
+
+```javascript
+export const query = graphql`
+  query($slug: String) {
+    posts(url: { eq: $slug }) {
+      url
+      title
+      image {
+        local {
+          childImageSharp {
+            fluid(maxWidth: 2000) {
+              ...GatsbyImageSharpFluid_withWebp
+            }
+          }
+        }
+        alttext
+      }
+    }
+  }
+`
 ```
 
 ## Contributing
