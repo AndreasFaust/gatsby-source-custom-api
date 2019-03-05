@@ -1,6 +1,6 @@
 # Gatsby Source Custom API
 
-**Gatsby Source Custom API** helps you sourcing data from any API and transform it into Gatsby-nodes. Define keys you want to be transformed to image-nodes and use them with Gatsy Image.
+**Gatsby Source Custom API** helps you sourcing data from any API and transform it into Gatsby-nodes. Define keys you want to be transformed to image-nodes and use them with **[Gatsby Image](https://www.gatsbyjs.org/packages/gatsby-image/)**.
 
 ## Getting Started
 
@@ -28,15 +28,15 @@ module.exports = {
 
 ## Options
 
-| **Name**  | **Type**         | **Description**                                                                                                                                                                                |
-| :-------- | :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| url       | object or string | `Required.` Url of your API as a string. If you have two different APIs for development and production, define an object with the keys `production` and `development`.                         |
-| rootKey   | string           | `Optional.` Name your API.                                                                                                                                                                     |
-| imageKeys | array            | Define the keys of image-objects you want to transform to image-nodes, that can be used with Gatsby Image. This objects need to have a key called `url` as image-source. Default: `['image']`. |
+| **Name**  | **Type**         | **Description**                                                                                                                                                                                                                                   |
+| :-------- | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| url       | object or string | `Required.` Url of your API as a string. If you have two different APIs for development and production, define an object with the keys `production` and `development`.                                                                            |
+| rootKey   | string           | `Optional.` Name your API.                                                                                                                                                                                                                        |
+| imageKeys | array            | Define the keys of image-objects you want to transform to image-nodes, that can be used with Gatsby Image. This objects need to have a key called `url` as image-source. Gatsby-Images are added under the sub-key `local`. Default: `['image']`. |
 
 ### Transform Nodes to Pages
 
-Here's a sample of how you use the required nodes to automatically generate pages: Insert the following code into the file `gatsby-node.js`. The sample key here is an array called `posts`. All array-elements can be required in GraphQl via `allPosts`.
+This is an example of how you use the required nodes to automatically generate pages: Insert the following code into the file `gatsby-node.js`. The sample key here is an array called `posts`. All array-elements can be required in GraphQl via `allPosts`. In this example the posts have a child-key called "url", which defines their path and serves as marker to find them in your matching React-component (`pages/post.js`).
 
 ```javascript
 const path = require('path')
@@ -62,7 +62,7 @@ exports.createPages = async ({ graphql, actions }) => {
         context: {
           // Data passed to context is available
           // in page queries as GraphQL variables.
-          slug: node.url,
+          url: node.url,
         },
       })
     })
@@ -73,9 +73,16 @@ exports.createPages = async ({ graphql, actions }) => {
 In your `pages/post.js` you can require the data like so:
 
 ```javascript
+import React from 'react'
+import { graphql } from 'gatsby'
+
+const Post = ({ data }) => {
+  return <h1>{data.posts.title}</h1>
+}
+
 export const query = graphql`
-  query($slug: String) {
-    posts(url: { eq: $slug }) {
+  query($url: String) {
+    posts(url: { eq: $url }) {
       url
       title
       image {
@@ -91,7 +98,49 @@ export const query = graphql`
     }
   }
 `
+
+export default Post
 ```
+
+## ProcessWire
+
+This source-plugin was originally developed to use the amazing Open-Source-CMS **[ProcessWire](https://www.processwire.com/)** as a source for Gatsby. This simply can be achieved with this `home`-template:
+
+```php
+<?php namespace ProcessWire;
+require_once ("buildPosts.php");
+header('Content-Type: application/json');
+
+if ($page->name === "home") {
+  $posts = $pages->find("template=post");
+  return json_encode([
+      "posts" => buildPosts($posts),
+  ]);
+}
+```
+
+This could be the required file `buildPosts.php`:
+
+```php
+<?php namespace ProcessWire;
+
+function buildPosts($posts) {
+    $return = [];
+    foreach ($posts as $post) {
+        $return[] = [
+          "url" => $post->url,
+          "title" => $post->title,
+          "image" => [
+            "url" => $post->image->httpUrl,
+            "description" => $post->image->description,
+          ],
+        ];
+    }
+    return $return;
+}
+```
+
+Additionally, I developed a **ProcessWire-Module, to trigger Gatsby-builds from the backend.** I’ve planned to publish this module open-source in the near future, but it needs some more work, to make it universally deployable.
 
 ## Contributing
 
