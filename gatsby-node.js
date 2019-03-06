@@ -31,7 +31,7 @@ exports.sourceNodes = async (
         rootKey = 'jsonAPI',
         imageKeys = ['image'],
     } = configOptions
-    const URL = getUrl(process.env, url)
+    const URL = getUrl(process.env.NODE_ENV, url)
     const data = await fetch(URL).then(res => res.json())
 
     let entities = flattenEntities(createNodeEntities({
