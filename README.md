@@ -28,11 +28,11 @@ module.exports = {
 
 ## Options
 
-| **Name**  | **Type**         | **Description**                                                                                                                                                                                                                                   |
-| :-------- | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| url       | object or string | `Required.` Url of your API as a string. If you have two different APIs for development and production, define an object with the keys `production` and `development`.                                                                            |
-| rootKey   | string           | `Optional.` Name your API.                                                                                                                                                                                                                        |
-| imageKeys | array            | Define the keys of image-objects you want to transform to image-nodes, that can be used with Gatsby Image. This objects need to have a key called `url` as image-source. Gatsby-Images are added under the sub-key `local`. Default: `['image']`. |
+| **Name**  | **Type**         | **Description**                                                                                                                                                                                         |
+| :-------- | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| url       | object or string | `Required.` Url of your API as a string. If you have two different APIs for development and production, define an object with the keys `production` and `development`.                                  |
+| rootKey   | string           | `Optional.` Name your API.                                                                                                                                                                              |
+| imageKeys | array            | Define the keys of image objects. These must have a childkey called `url`, which is a string that defines the path to an image file. Gatsby-Images are added as childkey `local`. Default: `['image']`. |
 
 ## Images
 
@@ -40,7 +40,7 @@ module.exports = {
 
 #### How does it recognize images?
 
-The default key for images is **image**. You can also define your own image keys with the option `imageKeys`. Images have to be objects containing a key called `url`, that holds the string to its source.
+The default key for images is `image`. You can also define your own image keys with the option `imageKeys`. Images have to be objects containing a childkey called `url`, which is a string that defines the path to an image file. Gatsby-Images are added as childkey `local`.
 
 #### What about Caching?
 
