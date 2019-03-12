@@ -25,10 +25,10 @@ exports.sourceNodes = async (
     },
     configOptions,
 ) => {
-    const { createNode } = actions
+    const { createNode, touchNode } = actions
     const {
         url,
-        rootKey = 'jsonAPI',
+        rootKey = 'customAPI',
         imageKeys = ['image'],
     } = configOptions
     const URL = getUrl(process.env.NODE_ENV, url)
@@ -43,7 +43,7 @@ exports.sourceNodes = async (
     }))
 
     entities = await loadImages({
-        entities, imageKeys, createNode, createNodeId, store, cache,
+        entities, imageKeys, createNode, createNodeId, touchNode, store, cache,
     })
 
     entities.forEach((entity) => {

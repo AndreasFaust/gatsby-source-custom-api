@@ -1,6 +1,6 @@
 # Gatsby Source Custom API
 
-**Gatsby Source Custom API** helps you sourcing data from any API and transform it into Gatsby-nodes. Define keys you want to be transformed to image-nodes and use them with **[Gatsby Image](https://www.gatsbyjs.org/packages/gatsby-image/)**.
+**Gatsby Source Custom API** helps you sourcing data from any API and transform it into Gatsby nodes. Define keys you want to be transformed into image-nodes and use them with **[Gatsby Image](https://www.gatsbyjs.org/packages/gatsby-image/)**.
 
 ## Getting Started
 
@@ -34,7 +34,19 @@ module.exports = {
 | rootKey   | string           | `Optional.` Name your API.                                                                                                                                                                                                                        |
 | imageKeys | array            | Define the keys of image-objects you want to transform to image-nodes, that can be used with Gatsby Image. This objects need to have a key called `url` as image-source. Gatsby-Images are added under the sub-key `local`. Default: `['image']`. |
 
-### Transform Nodes to Pages
+## Images
+
+`Gatsby Source Custom API` automatically downloads your image-files, so you can use them with **[Gatsby Image](https://www.gatsbyjs.org/packages/gatsby-image/)**.
+
+#### How does it recognize images?
+
+The default key for images is **image**. You can also define your own image keys with the option `imageKeys`. Images have to be objects containing a key called `url`, that holds the string to its source.
+
+#### What about Caching?
+
+If your image object provides a key called `modified`, this key gets cached and compared every time you build or develop. If it stays the same, the already downloaded version of the image-file is used.
+
+## Transform Nodes to Pages
 
 This is an example of how you use the required nodes to automatically generate pages: Insert the following code into the file `gatsby-node.js`. The sample key here is an array called `posts`. All array-elements can be required in GraphQl via `allPosts`. In this example the posts have a child-key called "url", which defines their path and serves as marker to find them in your matching React-component (`pages/post.js`).
 

@@ -1,7 +1,7 @@
 {
   "name": "gatsby-source-custom-api",
-  "version": "0.0.6",
-  "description": "Source data from any API and transform it into Gatsby-nodes.",
+  "version": "0.1.0",
+  "description": "Source data from any API and transform it into Gatsby-nodes. Download your image files and use them with Gatsby Image.",
   "main": "index.js",
   "author": "Andreas Faust",
   "license": "ISC",
@@ -15,7 +15,8 @@
     "source",
     "api",
     "json",
-    "image"
+    "image",
+    "cache"
   ],
   "dependencies": {
     "gatsby-source-filesystem": "^2.0.12",

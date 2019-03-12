@@ -5,7 +5,7 @@ function isImageKey(key, imageKeys) {
 }
 
 async function createImageNodes({
-    entity, createNode, createNodeId, store, cache,
+    entity, createNode, createNodeId, store, cache, imageCacheKey
 }) {
     let fileNode
     try {
@@ -20,6 +20,11 @@ async function createImageNodes({
         console.log(e)
     }
     if (fileNode) {
+        await cache.set(imageCacheKey, {
+            fileNodeID: fileNode.id,
+            modified: entity.modified,
+        })
+
         return {
             ...entity,
             local___NODE: fileNode.id,
@@ -29,16 +34,32 @@ async function createImageNodes({
 }
 
 async function loadImages({
-    entities, imageKeys, createNode, createNodeId, store, cache,
+    entities, imageKeys, createNode, createNodeId, store, cache, touchNode
 }) {
     return Promise.all(
         entities.map(async (entity) => {
-            if (isImageKey(entity.internal.type, imageKeys)) {
-                return createImageNodes({
-                    entity, createNode, createNodeId, store, cache,
+            if (!isImageKey(entity.internal.type, imageKeys) || !entity.url) {
+                return Promise.resolve(entity)
+            }
+
+            const imageCacheKey = `local-image-${entity.url}`
+            const cachedImage = await cache.get(imageCacheKey)
+            // If we have cached image and it wasn't modified, reuse
+            // previously created file node to not try to redownload
+            if (cachedImage
+                && entity.modified
+                && entity.modified === cachedImage.modified
+            ) {
+                fileNodeID = cachedImage.fileNodeID
+                touchNode({ nodeId: cachedImage.fileNodeID })
+                return Promise.resolve({
+                    ...entity,
+                    local___NODE: fileNodeID,
                 })
             }
-            return Promise.resolve(entity)
+            return createImageNodes({
+                entity, createNode, createNodeId, store, cache, imageCacheKey
+            })
         }),
     )
 }
