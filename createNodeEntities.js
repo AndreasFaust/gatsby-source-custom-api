@@ -21,29 +21,17 @@ function getEntityNodeLinks (entities, nodeData) {
   return links
 }
 
-function isRestricted (key) {
-  const restrictedNodeFields = ['id', 'children', 'parent', 'fields', 'internal']
-  if (restrictedNodeFields.includes(key)) {
-    console.log(`The key "${key}" is restricted in GraphQl!`)
-    return false
-  }
-  return true
-}
-
-function getChildNodeKeys ({ nodeData, schemas }) {
-  if (!nodeData) return []
-  return Object.keys(nodeData).filter((key) => {
-    if (isObject(nodeData[key])) return isRestricted(key)
-    if (isArray(nodeData[key])) {
-      if (!nodeData[key].length && schemas[key]) return true
-      if (isObject(nodeData[key][0])) return isRestricted(key)
-    }
+function getChildNodeKeys (data) {
+  if (!data) return []
+  return Object.keys(data).filter((key) => {
+    if (isObject(data[key])) return true
+    if (isArray(data[key])) return true
     return false
   })
 }
 
-function getNodeDataWithoutChildEntities (nodeData, childNodeKeys) {
-  const newData = { ...nodeData }
+function getDataWithoutChildEntities (data, childNodeKeys) {
+  const newData = { ...data }
   childNodeKeys.forEach((key) => {
     delete newData[key]
   })
@@ -51,85 +39,95 @@ function getNodeDataWithoutChildEntities (nodeData, childNodeKeys) {
 }
 
 function buildEntity ({
-  nodeName, nodeData, schemas, isDummy, createNodeId
+  name, data, schemas, createNodeId
 }) {
-  const childNodeKeys = getChildNodeKeys({ nodeData, schemas })
+  const childNodeKeys = getChildNodeKeys(data)
   const childEntities = flattenArray(
     childNodeKeys.map(key => (
-      createNodeEntities({ key, value: nodeData[key], schemas, isDummy, createNodeId })
+      createNodeEntities({
+        name: key,
+        data: data[key],
+        schemas,
+        createNodeId
+      })
     ))
   )
+  const dataWithoutChildEntities = getDataWithoutChildEntities(data, childNodeKeys)
+  const entityNodeLinks = getEntityNodeLinks(childEntities, data)
 
-  const nodeDataWithoutChildEntities = getNodeDataWithoutChildEntities(nodeData, childNodeKeys)
-  const entityNodeLinks = getEntityNodeLinks(childEntities, nodeData)
-
-  const nodeEntity = {
-    id: createNodeId(nodeName + createId()),
-    name: nodeName,
-    data: { ...nodeDataWithoutChildEntities, dummy: !!isDummy },
+  return [{
+    id: createNodeId(name + createId()),
+    name,
+    data: dataWithoutChildEntities,
     links: entityNodeLinks,
-    dummy: isDummy,
     childEntities
-  }
-  return [
-    nodeEntity
-  ]
+  }]
 }
 
 // same file because of circulat dependency
 
+function normalizeData (name, data, schemas) {
+  const schema = { ...schemas[name] }
+  if (!schema) return data
+  if (!Object.keys(data).length) return { ...schema, dummy: true }
+
+  const dataNormalized = { ...data }
+  Object.keys(schema).forEach(schemaKey => {
+    if (!dataNormalized[schemaKey]) {
+      dataNormalized[schemaKey] = schema[schemaKey]
+    }
+  })
+  return dataNormalized
+}
+
 function createNodeEntitiesFromArray ({
-  name, elements, schemas, isDummy, createNodeId
+  name, elements, createNodeId, schemas
 }) {
   if (!elements.length && schemas[name]) {
     return buildEntity({
-      nodeName: name,
-      nodeData: schemas[name],
-      schemas: schemas[name],
-      isDummy: true,
+      name,
+      data: { ...schemas[name], dummy: true },
+      schemas,
       createNodeId
     })
   }
-  const entitiesArray = elements.map(element => buildEntity({
-    nodeName: name,
-    nodeData: element,
+  const entitiesArray = elements.map(data => buildEntity({
+    name,
+    data: normalizeData(name, data, schemas),
     schemas,
-    isDummy,
     createNodeId
   }))
   return flattenArray(entitiesArray)
 }
 
 function createNodeEntitiesFromObject ({
-  key, value, schemas, isDummy, createNodeId
+  name, data, schemas, createNodeId
 }) {
   return buildEntity({
-    nodeName: key,
-    nodeData: value,
+    name,
+    data: normalizeData(name, data, schemas),
     schemas,
-    isDummy,
     createNodeId
   })
 }
 
 function createNodeEntities ({
-  key, value, schemas, isDummy, createNodeId
+  name, data, createNodeId, schemas
 }) {
-  if (typeof value === 'object') {
-    if (isArray(value)) {
-      return createNodeEntitiesFromArray({
-        name: key,
-        elements: value,
-        schemas,
-        isDummy,
-        createNodeId
-      })
-    }
-    return createNodeEntitiesFromObject({
-      key,
-      value,
+  console.log(data)
+  if (isArray(data)) {
+    return createNodeEntitiesFromArray({
+      name,
+      elements: data,
       schemas,
-      isDummy,
+      createNodeId
+    })
+  }
+  if (isObject(data)) {
+    return createNodeEntitiesFromObject({
+      name,
+      data,
+      schemas,
       createNodeId
     })
   }

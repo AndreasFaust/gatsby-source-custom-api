@@ -11,7 +11,7 @@ async function createImageNodes ({
   let fileNode
   try {
     fileNode = await createRemoteFileNode({
-      url: entity.url,
+      url: entity.data.url,
       store,
       cache,
       createNode,
@@ -23,7 +23,7 @@ async function createImageNodes ({
   if (fileNode) {
     await cache.set(imageCacheKey, {
       fileNodeID: fileNode.id,
-      modified: entity.modified
+      modified: entity.data.modified
     })
 
     return {
@@ -48,7 +48,7 @@ async function loadImages ({
 }) {
   let dummyImageNode = await createRemoteFileNode({
     // url: path.dirname(__filename) + '/dummy-image.jpg',
-    url: 'https://picsum.photos/200/300/?random',
+    url: 'https://via.placeholder.com/100.jpg/0000FF/FFFFFF?Text=Dummy',
     store,
     cache,
     createNode,
@@ -61,7 +61,7 @@ async function loadImages ({
       if (!isImageKey(entity.name, imageKeys)) {
         return Promise.resolve(entity)
       }
-      if (entity.dummy || !entity.url) {
+      if (entity.data.dummy || !entity.data.url) {
         return Promise.resolve({
           ...entity,
           links: {
@@ -71,11 +71,11 @@ async function loadImages ({
         })
       }
 
-      const imageCacheKey = `local-image-${entity.url}`
+      const imageCacheKey = `local-image-${entity.data.url}`
       const cachedImage = await cache.get(imageCacheKey)
       // If we have cached image and it wasn't modified, reuse
       // previously created file node to not try to redownload
-      if (cachedImage && entity.modified && entity.modified === cachedImage.modified) {
+      if (cachedImage && entity.data.modified && entity.data.modified === cachedImage.modified) {
         const { fileNodeID } = cachedImage
         touchNode({ nodeId: fileNodeID })
         return Promise.resolve({
