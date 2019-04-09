@@ -1,27 +1,33 @@
 {
-  "name": "gatsby-source-custom-api",
-  "version": "0.1.1",
-  "description": "Source data from any API and transform it into Gatsby-nodes. Download your image files and use them with Gatsby Image.",
-  "main": "index.js",
-  "author": "Andreas Faust",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/AndreasFaust/gatsby-source-custom-api"
-  },
-  "keywords": [
-    "gatsby",
-    "gatsby-plugin",
-    "source",
-    "api",
-    "json",
-    "image",
-    "cache"
-  ],
-  "dependencies": {
-    "gatsby-source-filesystem": "^2.0.12",
-    "lodash": "^4.17.11",
-    "node-fetch": "^2.3.0"
-  },
-  "devDependencies": {}
+    "name": "gatsby-source-custom-api",
+    "version": "0.1.1",
+    "description": "Source data from any API and transform it into Gatsby-nodes. Download your image files and use them with Gatsby Image.",
+    "main": "index.js",
+    "author": "Andreas Faust",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AndreasFaust/gatsby-source-custom-api"
+    },
+    "keywords": [
+        "gatsby",
+        "gatsby-plugin",
+        "source",
+        "api",
+        "json",
+        "image",
+        "cache"
+    ],
+    "scripts": {
+        "release:major": "changelog -M && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
+        "release:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
+        "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version patch && git push origin && git push origin --tags"
+    },
+    "dependencies": {
+        "gatsby-source-filesystem": "^2.0.29",
+        "node-fetch": "^2.3.0"
+    },
+    "devDependencies": {
+        "generate-changelog": "^1.7.1"
+    }
 }
