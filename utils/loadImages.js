@@ -5,6 +5,20 @@ function isImageKey (key, imageKeys) {
   return imageKeys.includes(key)
 }
 
+function getDummyEntityObject (entity, dummyImageNode) {
+  return {
+    ...entity,
+    data: {
+      ...entity.data,
+      dummy: true
+    },
+    links: {
+      ...entity.links,
+      local___NODE: dummyImageNode.id
+    }
+  }
+}
+
 async function createImageNodes ({
   entity, createNode, createNodeId, store, cache, imageCacheKey, dummyImageNode
 }) {
@@ -34,13 +48,7 @@ async function createImageNodes ({
       }
     }
   }
-  return {
-    ...entity,
-    links: {
-      ...entity.links,
-      local___NODE: dummyImageNode.id
-    }
-  }
+  return getDummyEntityObject(entity, dummyImageNode)
 }
 
 async function loadImages ({
@@ -62,13 +70,7 @@ async function loadImages ({
         return Promise.resolve(entity)
       }
       if (entity.data.dummy || !entity.data.url) {
-        return Promise.resolve({
-          ...entity,
-          links: {
-            ...entity.links,
-            local___NODE: dummyImageNode.id
-          }
-        })
+        return Promise.resolve(getDummyEntityObject(entity, dummyImageNode))
       }
 
       const imageCacheKey = `local-image-${entity.data.url}`
