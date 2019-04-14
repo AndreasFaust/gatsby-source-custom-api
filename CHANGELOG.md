@@ -1,3 +1,9 @@
+### 1.1.0 (2019-04-14)
+
+##### New Features
+
+*  Add validation for image-extension. ([c31cb804](https://github.com/AndreasFaust/gatsby-source-custom-api/commit/c31cb804dacd0935b1a690871f60b76514b69ecc))
+
 ## 1.0.0 (2019-04-10)
 
 ##### New Features
