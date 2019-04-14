@@ -114,7 +114,6 @@ function createNodeEntitiesFromObject ({
 function createNodeEntities ({
   name, data, createNodeId, schemas
 }) {
-  console.log(data)
   if (isArray(data)) {
     return createNodeEntitiesFromArray({
       name,

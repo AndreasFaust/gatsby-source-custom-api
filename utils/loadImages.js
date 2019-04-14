@@ -20,7 +20,14 @@ function getDummyEntityObject (entity, dummyImageNode) {
 }
 
 async function createImageNodes ({
-  entity, createNode, createNodeId, store, cache, imageCacheKey, dummyImageNode
+  entity,
+  createNode,
+  createNodeId,
+  store,
+  cache,
+  imageName,
+  imageCacheKey,
+  dummyImageNode
 }) {
   let fileNode
   try {
@@ -39,7 +46,7 @@ async function createImageNodes ({
       fileNodeID: fileNode.id,
       modified: entity.data.modified
     })
-
+    console.log('Image downloaded: ' + imageName)
     return {
       ...entity,
       links: {
@@ -49,6 +56,18 @@ async function createImageNodes ({
     }
   }
   return getDummyEntityObject(entity, dummyImageNode)
+}
+
+function extensionIsValid (url) {
+  const ext = url.split('.').pop().split('/')[0]
+  switch (ext) {
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+      return true
+    default:
+      return false
+  }
 }
 
 async function loadImages ({
@@ -72,14 +91,23 @@ async function loadImages ({
       if (entity.data.dummy || !entity.data.url) {
         return Promise.resolve(getDummyEntityObject(entity, dummyImageNode))
       }
-
-      const imageCacheKey = `local-image-${entity.data.url}`
+      if (!extensionIsValid(entity.data.url)) {
+        console.log(`Image-Extension not valid: ${entity.data.url}`)
+        return Promise.resolve(getDummyEntityObject(entity, dummyImageNode))
+      }
+      const imageName = entity.data.url.match(/([^/]*)\/*$/)[1]
+      const imageCacheKey = `local-image-${imageName}`
       const cachedImage = await cache.get(imageCacheKey)
       // If we have cached image and it wasn't modified, reuse
       // previously created file node to not try to redownload
-      if (cachedImage && entity.data.modified && entity.data.modified === cachedImage.modified) {
+      if (
+        cachedImage &&
+        entity.data.modified &&
+        entity.data.modified === cachedImage.modified
+      ) {
         const { fileNodeID } = cachedImage
         touchNode({ nodeId: fileNodeID })
+        console.log('Image from Cache: ' + imageName)
         return Promise.resolve({
           ...entity,
           links: {
@@ -89,7 +117,14 @@ async function loadImages ({
         })
       }
       return createImageNodes({
-        entity, createNode, createNodeId, store, cache, imageCacheKey, dummyImageNode
+        entity,
+        createNode,
+        createNodeId,
+        store,
+        cache,
+        imageName,
+        imageCacheKey,
+        dummyImageNode
       })
     })
   )
