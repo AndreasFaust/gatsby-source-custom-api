@@ -21,11 +21,16 @@ function getEntityNodeLinks (entities, nodeData) {
   return links
 }
 
-function getChildNodeKeys (data) {
+function getChildNodeKeys (data,  schemas) {
   if (!data) return []
   return Object.keys(data).filter((key) => {
     if (isObject(data[key])) return true
-    if (isArray(data[key])) return true
+    // if (isArray(data[key])) return true
+    if (isArray(data[key])) {
+      if (isObject(data[key][0]) || schemas[key]) {
+        return true
+      }
+    }
     return false
   })
 }
@@ -38,10 +43,24 @@ function getDataWithoutChildEntities (data, childNodeKeys) {
   return newData
 }
 
+function validateChildData (name, data, schemas) {
+  const validData = {}
+  Object.keys(data).forEach(key => {
+    if (isArray(data[key]) && !data[key].length) {
+      if (schemas.hasOwnProperty(key)) {
+        validData[key] = [schemas[key]]
+      }
+    } else {
+      validData[key] = data[key]
+    }
+  })
+  return validData
+}
+
 function buildEntity ({
   name, data, schemas, createNodeId
 }) {
-  const childNodeKeys = getChildNodeKeys(data)
+  const childNodeKeys = getChildNodeKeys(data, schemas)
   const childEntities = flattenArray(
     childNodeKeys.map(key => (
       createNodeEntities({
@@ -53,12 +72,12 @@ function buildEntity ({
     ))
   )
   const dataWithoutChildEntities = getDataWithoutChildEntities(data, childNodeKeys)
+  const validChildData = validateChildData(name, dataWithoutChildEntities, schemas)
   const entityNodeLinks = getEntityNodeLinks(childEntities, data)
-
   return [{
     id: createNodeId(name + createId()),
     name,
-    data: dataWithoutChildEntities,
+    data: validChildData,
     links: entityNodeLinks,
     childEntities
   }]
