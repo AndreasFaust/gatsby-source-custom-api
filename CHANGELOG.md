@@ -1,3 +1,9 @@
+#### 1.1.1 (2019-04-29)
+
+##### Bug Fixes
+
+*  Fix handling arrays. ([7f3daf0e](https://github.com/AndreasFaust/gatsby-source-custom-api/commit/7f3daf0e1afb80f9d938e239e8fb7e92cc5ebd16))
+
 ### 1.1.0 (2019-04-14)
 
 ##### New Features
