@@ -73,18 +73,18 @@ module.exports = {
                 rootKey: "posts",
                 schemas: {
                     posts: `
-                    url: String
-                    images: [images]
-                    author: author
-                `,
+                        url: String
+                        images: [images]
+                        author: author
+                    `,
                     images: `
-                    url: String
-                    modified: Int
-                `,
+                        url: String
+                        modified: Int
+                    `,
                     author: `
-                    firstname: String
-                    lastname: String
-                `
+                        firstname: String
+                        lastname: String
+                    `
                 }
             }
         }
