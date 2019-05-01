@@ -104,10 +104,6 @@ The default key for images is `image`. You can also define your own image keys w
 
 If your image object provides a key called `modified`, this key gets cached and compared every time you build or develop. If it stays the same, the already downloaded version of the image-file is used.
 
-### Replace conflicting Keys
-
-Some of the returned keys may be transformed, if they conflict with restricted keys used for GraphQL such as the following ['id', 'children', 'parent', 'fields', 'internal']. These conflicting keys will now show up as `[key]_normalized`. (Thanks to [gatsby-source-apiserver](https://github.com/thinhle-agilityio/gatsby-source-apiserver))
-
 ## Transform Nodes to Pages
 
 This is an example of how you use the required nodes to automatically generate pages: Insert the following code into the file `gatsby-node.js`. The sample key here is an array called `posts`. All array-elements can be required in GraphQl via `allPosts`. In this example the posts have a child-key called "url", which defines their path and serves as marker to find them in your matching React-component (`pages/post.js`).
@@ -173,6 +169,10 @@ export const query = graphql`
 
 export default Post;
 ```
+
+## Replace conflicting Keys
+
+Some of the returned keys may be transformed, if they conflict with restricted keys used for GraphQL such as the following ['id', 'children', 'parent', 'fields', 'internal']. These conflicting keys will now show up as `[key]_normalized`. (Thanks to [gatsby-source-apiserver](https://github.com/thinhle-agilityio/gatsby-source-apiserver))
 
 ## Contributing
 
