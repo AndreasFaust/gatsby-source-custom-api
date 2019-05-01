@@ -172,7 +172,7 @@ export default Post;
 
 ## Replace conflicting Keys
 
-Some of the returned keys may be transformed, if they conflict with restricted keys used for GraphQL such as the following ['id', 'children', 'parent', 'fields', 'internal']. These conflicting keys will now show up as `[key]_normalized`. (Thanks to [gatsby-source-apiserver](https://github.com/thinhle-agilityio/gatsby-source-apiserver))
+Some of the returned keys may be transformed, if they conflict with restricted keys used for GraphQL such as the following `['id', 'children', 'parent', 'fields', 'internal']`. These conflicting keys will now show up as `[key]_normalized`. (Thanks to [gatsby-source-apiserver](https://github.com/thinhle-agilityio/gatsby-source-apiserver))
 
 ## Contributing
 
