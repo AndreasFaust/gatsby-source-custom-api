@@ -1,4 +1,5 @@
-const { createId, isObject, flattenArray, isArray } = require('./utils/helpers')
+const { isObject, flattenArray, isArray } = require('./utils/helpers')
+const uuid = require('uuid/v1')
 
 function getEntityNodeLinks (entities, nodeData) {
   const links = {}
@@ -21,15 +22,12 @@ function getEntityNodeLinks (entities, nodeData) {
   return links
 }
 
-function getChildNodeKeys (data,  schemas) {
+function getChildNodeKeys (data, schemas) {
   if (!data) return []
   return Object.keys(data).filter((key) => {
     if (isObject(data[key])) return true
-    // if (isArray(data[key])) return true
-    if (isArray(data[key])) {
-      if (isObject(data[key][0]) || schemas[key]) {
-        return true
-      }
+    if (isArray(data[key]) && schemas[key]) {
+      return true
     }
     return false
   })
@@ -41,20 +39,6 @@ function getDataWithoutChildEntities (data, childNodeKeys) {
     delete newData[key]
   })
   return newData
-}
-
-function validateChildData (name, data, schemas) {
-  const validData = {}
-  Object.keys(data).forEach(key => {
-    if (isArray(data[key]) && !data[key].length) {
-      if (schemas.hasOwnProperty(key)) {
-        validData[key] = [schemas[key]]
-      }
-    } else {
-      validData[key] = data[key]
-    }
-  })
-  return validData
 }
 
 function buildEntity ({
@@ -72,79 +56,43 @@ function buildEntity ({
     ))
   )
   const dataWithoutChildEntities = getDataWithoutChildEntities(data, childNodeKeys)
-  const validChildData = validateChildData(name, dataWithoutChildEntities, schemas)
   const entityNodeLinks = getEntityNodeLinks(childEntities, data)
   return [{
-    id: createNodeId(name + createId()),
+    id: createNodeId(name + uuid()),
     name,
-    data: validChildData,
+    data: dataWithoutChildEntities,
     links: entityNodeLinks,
     childEntities
   }]
 }
 
-// same file because of circulat dependency
-
 function normalizeData (name, data, schemas) {
-  const schema = { ...schemas[name] }
-  if (!schema) return data
-  if (!Object.keys(data).length) return { ...schema, dummy: true }
-
-  const dataNormalized = { ...data }
-  Object.keys(schema).forEach(schemaKey => {
-    if (!dataNormalized[schemaKey]) {
-      dataNormalized[schemaKey] = schema[schemaKey]
-    }
-  })
-  return dataNormalized
-}
-
-function createNodeEntitiesFromArray ({
-  name, elements, createNodeId, schemas
-}) {
-  if (!elements.length && schemas[name]) {
-    return buildEntity({
-      name,
-      data: { ...schemas[name], dummy: true },
-      schemas,
-      createNodeId
-    })
+  const schema = schemas[name]
+  if (!Object.keys(data).length && !schema) {
+    return { dummy: true }
   }
-  const entitiesArray = elements.map(data => buildEntity({
-    name,
-    data: normalizeData(name, data, schemas),
-    schemas,
-    createNodeId
-  }))
-  return flattenArray(entitiesArray)
-}
-
-function createNodeEntitiesFromObject ({
-  name, data, schemas, createNodeId
-}) {
-  return buildEntity({
-    name,
-    data: normalizeData(name, data, schemas),
-    schemas,
-    createNodeId
-  })
+  if (!schema) {
+    console.log(`Object '${name}': Better provide a schema!`)
+  }
+  return data
 }
 
 function createNodeEntities ({
   name, data, createNodeId, schemas
 }) {
   if (isArray(data)) {
-    return createNodeEntitiesFromArray({
+    const entitiesArray = data.map(d => buildEntity({
       name,
-      elements: data,
+      data: normalizeData(name, d, schemas),
       schemas,
       createNodeId
-    })
+    }))
+    return flattenArray(entitiesArray)
   }
   if (isObject(data)) {
-    return createNodeEntitiesFromObject({
+    return buildEntity({
       name,
-      data,
+      data: normalizeData(name, data, schemas),
       schemas,
       createNodeId
     })

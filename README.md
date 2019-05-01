@@ -15,10 +15,7 @@ module.exports = {
     {
       resolve: 'gatsby-source-custom-api',
       options: {
-        url: {
-          development: 'http://your-local-api.dev',
-          production: 'https://remote-api-server.de/',
-        }
+        url: "www.my-custom-api.com",
       },
     },
 }
@@ -31,7 +28,65 @@ module.exports = {
 | url       | object or string | `Required.` Url of your API as a string. If you have two different APIs for development and production, define an object with the keys `production` and `development`.                                  |
 | rootKey   | string           | `Optional.` Name your API.                                                                                                                                                                              |
 | imageKeys | array            | Define the keys of image objects. These must have a childkey called `url`, which is a string that defines the path to an image file. Gatsby-Images are added as childkey `local`. Default: `['image']`. |
-| schemas   | object           | Define default-schemas for the objects of your API you explicitly want to require via GraphQL. See "Provide Default Schemas" for more information.                                                      |
+| schemas   | object           | Define default-schemas for the objects of your API. See "Provide Default Schemas" for more information.                                                                                                 |
+
+## Provide Default Schemas
+
+You need to provide default schemas for the arrays and objects of your API to avoid GraphQl-errors. You can provide default schemas via the prop `schemas`. More information: [https://graphql.org/learn/schema/](https://graphql.org/learn/schema/)
+
+```javascript
+// Lets assume this is the data from your API:
+const exampleDataFromApi = [
+    {
+        url: {
+            development: "http://my-local-api.dev", // on "gatsby develop"
+            production: "https://my-remote-api.com" // on "gatsby build"
+        },
+        images: [
+            {
+                url: "www.myblog.com/image-1.jpg",
+                modified: 1556752476267
+            },
+            {
+                url: "www.myblog.com/image-2.jpg",
+                modified: 1556752702168
+            }
+        ],
+        author: {
+            firstname: "John",
+            lastname: "Doe"
+        }
+    }
+];
+
+// This is the content of your gatsby-config.js
+// and what you need to provide as schema:
+module.exports = {
+    plugins: [
+        resolve: "gatsby-source-custom-api",
+        options: {
+            url: "http://your-api.dev",
+            imageKeys: ["images"],
+            rootKey: "posts",
+            schemas: {
+                posts: `
+                    url: String
+                    images: [images]
+                    author: author
+                `,
+                images: `
+                    url: String
+                    modified: Int
+                `,
+                author: `
+                    firstname: String
+                    lastname: String
+                `
+            }
+        }
+    ]
+};
+```
 
 ## Images
 
@@ -44,91 +99,6 @@ The default key for images is `image`. You can also define your own image keys w
 #### What about Caching?
 
 If your image object provides a key called `modified`, this key gets cached and compared every time you build or develop. If it stays the same, the already downloaded version of the image-file is used.
-
-## Provide Default Schemas
-
-You need to provide default schemas for the arrays and objects of your API to avoid GraphQl-errors.
-Arrays may not stay empty and object do always need to include the same amount of keys, which need be of the same type.
-You can provide default schemas via the prop `schemas`. It is an object, which keys are the default values.
-Objects and Arrays stay empty and be better defined as default-schemas themselves.
-
-```javascript
-module.exports = {
-    {
-      resolve: 'gatsby-source-custom-api',
-      options: {
-        url: 'http://your-api.dev',
-        schemas: {
-            posts: {
-                url: '',
-                images: [],
-                author: {}
-            },
-            images: {
-                url: '',
-                modified: 0,
-            },
-            author: {
-                firstname: '',
-                lastname: '',
-            }
-        }
-      },
-    },
-}
-```
-
-### Dummy Nodes for empty Arrays, empty Objects and failing Images
-
-If an array stays empty, `gatsby-source-custom-api` creates a dummy element to avoid errors, if you provide a schema for this array. It's the same with completely empty objects and failed images.
-You certainly don't want to render those, so you need to filter them out:
-
-```javascript
-import React from "react";
-import Img from "gatsby-image";
-import { graphql } from "gatsby";
-
-const PostImages = ({ images }) => {
-    return images.filter(image => !image.dummy).map(image => (
-        <Img key={image.id} fluid={image.local.childImageSharp.fluid} />
-    ))
-};
-
-const Posts = ({ data }) => {
-    const posts = data.allPosts.nodes.filter(post => !post.dummy);
-    return posts.map(post => {
-        return <PostImages key={post.id} images={post.images}
-    });
-};
-
-export const query = graphql`
-    {
-        allPosts {
-            nodes {
-                url
-                dummy
-                title
-                image {
-                    local {
-                        childImageSharp {
-                            fluid(maxWidth: 2000) {
-                                ...GatsbyImageSharpFluid_withWebp
-                            }
-                        }
-                    }
-                    alttext
-                }
-            }
-        }
-    }
-`;
-
-export default Posts;
-```
-
-> **Attention:** A dummy-image is downloaded from [placeholder.com](https://placeholder.com) to mimic a real file-node.
-> This means, that this feature only works with a working internet-connection.
-> Any suggestions for a better solution are very much appreciated.
 
 ### Replace conflicting Keys
 

@@ -1,22 +1,7 @@
 const { createRemoteFileNode } = require('gatsby-source-filesystem')
-// const path = require('path')
 
 function isImageKey (key, imageKeys) {
   return imageKeys.includes(key)
-}
-
-function getDummyEntityObject (entity, dummyImageNode) {
-  return {
-    ...entity,
-    data: {
-      ...entity.data,
-      dummy: true
-    },
-    links: {
-      ...entity.links,
-      local___NODE: dummyImageNode.id
-    }
-  }
 }
 
 async function createImageNodes ({
@@ -26,8 +11,7 @@ async function createImageNodes ({
   store,
   cache,
   imageName,
-  imageCacheKey,
-  dummyImageNode
+  imageCacheKey
 }) {
   let fileNode
   try {
@@ -55,7 +39,7 @@ async function createImageNodes ({
       }
     }
   }
-  return getDummyEntityObject(entity, dummyImageNode)
+  return entity
 }
 
 function extensionIsValid (url) {
@@ -73,27 +57,14 @@ function extensionIsValid (url) {
 async function loadImages ({
   entities, imageKeys, createNode, createNodeId, store, cache, touchNode
 }) {
-  let dummyImageNode = await createRemoteFileNode({
-    // url: path.dirname(__filename) + '/dummy-image.jpg',
-    url: 'https://via.placeholder.com/100.jpg/0000FF/FFFFFF?Text=Dummy',
-    store,
-    cache,
-    createNode,
-    createNodeId,
-    ext: '.jpg'
-  })
-
   return Promise.all(
     entities.map(async (entity) => {
-      if (!isImageKey(entity.name, imageKeys)) {
+      if (!isImageKey(entity.name, imageKeys) || !entity.data.url) {
         return Promise.resolve(entity)
-      }
-      if (entity.data.dummy || !entity.data.url) {
-        return Promise.resolve(getDummyEntityObject(entity, dummyImageNode))
       }
       if (!extensionIsValid(entity.data.url)) {
         console.log(`Image-Extension not valid: ${entity.data.url}`)
-        return Promise.resolve(getDummyEntityObject(entity, dummyImageNode))
+        return Promise.resolve(entity)
       }
       const imageName = entity.data.url.match(/([^/]*)\/*$/)[1]
       const imageCacheKey = `local-image-${imageName}`
@@ -123,8 +94,7 @@ async function loadImages ({
         store,
         cache,
         imageName,
-        imageCacheKey,
-        dummyImageNode
+        imageCacheKey
       })
     })
   )
