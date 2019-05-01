@@ -12,13 +12,15 @@
 
 ```javascript
 module.exports = {
-    {
-      resolve: 'gatsby-source-custom-api',
-      options: {
-        url: "www.my-custom-api.com",
-      },
-    },
-}
+    plugins: [
+        {
+            resolve: "gatsby-source-custom-api",
+            options: {
+                url: "www.my-custom-api.com"
+            }
+        }
+    ]
+};
 ```
 
 ## Options
@@ -38,7 +40,7 @@ You need to provide default schemas for the arrays and objects of your API to av
 // Lets assume this is the data from your API:
 const exampleDataFromApi = [
     {
-        url: 'post-1',
+        url: "post-1",
         images: [
             {
                 url: "image-1.jpg",
@@ -60,28 +62,30 @@ const exampleDataFromApi = [
 // and what you need to provide as schema:
 module.exports = {
     plugins: [
-        resolve: "gatsby-source-custom-api",
-        options: {
-            url: {
-                development: "http://my-local-api.dev", // on "gatsby develop"
-                production: "https://my-remote-api.com" // on "gatsby build"
-            },
-            imageKeys: ["images"],
-            rootKey: "posts",
-            schemas: {
-                posts: `
+        {
+            resolve: "gatsby-source-custom-api",
+            options: {
+                url: {
+                    development: "http://my-local-api.dev", // on "gatsby develop"
+                    production: "https://my-remote-api.com" // on "gatsby build"
+                },
+                imageKeys: ["images"],
+                rootKey: "posts",
+                schemas: {
+                    posts: `
                     url: String
                     images: [images]
                     author: author
                 `,
-                images: `
+                    images: `
                     url: String
                     modified: Int
                 `,
-                author: `
+                    author: `
                     firstname: String
                     lastname: String
                 `
+                }
             }
         }
     ]
