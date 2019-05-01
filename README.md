@@ -38,17 +38,14 @@ You need to provide default schemas for the arrays and objects of your API to av
 // Lets assume this is the data from your API:
 const exampleDataFromApi = [
     {
-        url: {
-            development: "http://my-local-api.dev", // on "gatsby develop"
-            production: "https://my-remote-api.com" // on "gatsby build"
-        },
+        url: 'post-1',
         images: [
             {
-                url: "www.myblog.com/image-1.jpg",
+                url: "image-1.jpg",
                 modified: 1556752476267
             },
             {
-                url: "www.myblog.com/image-2.jpg",
+                url: "image-2.jpg",
                 modified: 1556752702168
             }
         ],
@@ -65,7 +62,10 @@ module.exports = {
     plugins: [
         resolve: "gatsby-source-custom-api",
         options: {
-            url: "http://your-api.dev",
+            url: {
+                development: "http://my-local-api.dev", // on "gatsby develop"
+                production: "https://my-remote-api.com" // on "gatsby build"
+            },
             imageKeys: ["images"],
             rootKey: "posts",
             schemas: {
