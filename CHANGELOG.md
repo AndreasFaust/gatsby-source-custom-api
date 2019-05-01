@@ -1,3 +1,10 @@
+#### 2.0.1 (2019-05-01)
+
+##### Documentation Changes
+
+*  Fix readme. ([4fe1b902](https://github.com/AndreasFaust/gatsby-source-custom-api/commit/4fe1b902fcb4720aa8e214cdf1b36e40cb0b1a50))
+*  Fix readme. ([19dc1956](https://github.com/AndreasFaust/gatsby-source-custom-api/commit/19dc1956e879dbfb34ab0bcc2070191c0776d1c5))
+
 ## 2.0.0 (2019-05-01)
 
 ##### Breaking Changes
