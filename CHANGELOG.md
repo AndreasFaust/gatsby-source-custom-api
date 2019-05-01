@@ -1,3 +1,9 @@
+## 2.0.0 (2019-05-01)
+
+##### Breaking Changes
+
+*  Rewrite plugin to use the new schema-customization-api. ([5dd66a01](https://github.com/AndreasFaust/gatsby-source-custom-api/commit/5dd66a018beb04d54f6e8f4878a8791a95215d09))
+
 #### 1.1.1 (2019-04-29)
 
 ##### Bug Fixes
