@@ -1,3 +1,9 @@
+#### 2.1.1 (2019-07-16)
+
+##### Bug Fixes
+
+*  add readme ([3553ab46](https://github.com/AndreasFaust/gatsby-source-custom-api/commit/3553ab467ab49b16513ec94284ed09b5b2a676f5))
+
 ### 2.1.0 (2019-07-16)
 
 ##### Breaking Changes
