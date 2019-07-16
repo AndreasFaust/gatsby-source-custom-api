@@ -3,18 +3,26 @@
     {
       "title": "Ich bin Arbeit 1",
       "text": "Reiciendis rerum et animi sint. Sunt suscipit maiores ut quasi fugit animi officia. Maxime natus dolor nam rerum qui atque animi. Et molestias odit explicabo harum ex in quia adip.",
-      "image": {
-        "url": "https://images.unsplash.com/photo-1461988320302-91bde64fc8e4",
-        "modified": "12345678"
-      }
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1461988320302-91bde64fc8e4",
+          "modified": "12345678"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1461988320302-91bde64fc8e4",
+          "modified": "12345678"
+        },
+      ]
     },
     {
       "title": "Ich bin Arbeit 2",
       "text": "Reiciendis rerum et animi sint. Sunt suscipit maiores ut quasi fugit animi officia. Maxime natus dolor nam rerum qui atque animi. Et molestias odit explicabo harum ex in quia adip.",
-      "image": {
-        "url": "https://images.unsplash.com/photo-1461988320302-91bde64fc8e4",
-        "modified": "12345678"
-      }
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1461988320302-91bde64fc8e4",
+          "modified": "12345678"
+        }
+      ]
     }
   ]
 }
