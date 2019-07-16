@@ -1,68 +1,34 @@
 {
-  "name": "gatsby-source-custom-api",
-  "version": "2.0.4",
-  "description": "Source data from any API and transform it into Gatsby-nodes. Download your image files and use them with Gatsby Image.",
-  "author": "Andreas Faust",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/AndreasFaust/gatsby-source-custom-api"
-  },
-  "homepage": "https://andreasfaust.github.io/gatsby-source-custom-api/",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
-  "engines": {
-    "node": ">=8",
-    "npm": ">=5"
-  },
-  "keywords": [
-    "gatsby",
-    "gatsby-plugin",
-    "source",
-    "api",
-    "json",
-    "image",
-    "cache"
-  ],
-  "scripts": {
-    "build": "rollup -c && gatsby build --prefix-paths",
-    "develop": "gatsby develop",
-    "start": "yarn develop",
-    "dev": "yarn develop",
-    "deploy": "gh-pages -d public",
-    "release:major": "changelog -M && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
-    "release:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
-    "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version patch && git push origin && git push origin --tags"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/plugin-transform-runtime": "^7.4.4",
-    "@babel/preset-env": "^7.0.0",
-    "@babel/preset-react": "^7.0.0",
-    "babel-plugin-macros": "^2.5.1",
-    "gatsby": "^2.1.30",
-    "gatsby-image": "^2.0.20",
-    "gatsby-plugin-manifest": "^2.0.9",
-    "gatsby-plugin-offline": "^2.0.23",
-    "gatsby-plugin-react-helmet": "^3.0.2",
-    "gatsby-plugin-sharp": "^2.0.14",
-    "gatsby-source-filesystem": "^2.0.8",
-    "gatsby-transformer-sharp": "^2.1.18",
-    "gh-pages": "^2.0.1",
-    "prop-types": "^15.6.2",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-helmet": "^5.2.0",
-    "rollup": "^1.12.3",
-    "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.0.0",
-    "rollup-plugin-peer-deps-external": "^2.2.0",
-    "rollup-plugin-url": "^2.1.0",
-    "standard": "^13.0.2"
-  }
+    "name": "gatsby-source-custom-api",
+    "version": "2.0.4",
+    "description": "Source data from any API and transform it into Gatsby-nodes. Download your image files and use them with Gatsby Image.",
+    "main": "index.js",
+    "author": "Andreas Faust",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AndreasFaust/gatsby-source-custom-api"
+    },
+    "keywords": [
+        "gatsby",
+        "gatsby-plugin",
+        "source",
+        "api",
+        "json",
+        "image",
+        "cache"
+    ],
+    "scripts": {
+        "release:major": "changelog -M && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
+        "release:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
+        "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version patch && git push origin && git push origin --tags"
+    },
+    "dependencies": {
+        "gatsby-source-filesystem": "^2.0.29",
+        "node-fetch": "^2.3.0",
+        "uuid": "^3.3.2"
+    },
+    "devDependencies": {
+        "generate-changelog": "^1.7.1"
+    }
 }
