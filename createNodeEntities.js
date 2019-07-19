@@ -68,10 +68,11 @@ function buildEntity ({
 
 function normalizeData (name, data, schemas) {
   const schema = schemas[name]
+  if (!data) return { dummy: true }
   if (!Object.keys(data).length && !schema) {
     return { dummy: true }
   }
-  if (!schema) {
+  if (!schema) {
     console.log(`Object '${name}': Better provide a schema!`)
   }
   return data
