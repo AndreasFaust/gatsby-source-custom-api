@@ -11,7 +11,6 @@ module.exports = ({
     children: [],
     internal: {
       type: name,
-      url: data && data.url,
       content: JSON.stringify(data),
       contentDigest: createContentDigest(data)
     }
