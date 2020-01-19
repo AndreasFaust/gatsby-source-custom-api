@@ -1,3 +1,9 @@
+#### 2.1.4 (2020-01-19)
+
+##### Documentation Changes
+
+*  add information about multiple instances ([9d0076ee](https://github.com/AndreasFaust/gatsby-source-custom-api/commit/9d0076ee200fd045456f2207403ece696cbb9ac4))
+
 #### 2.1.3 (2019-12-29)
 
 #### 2.1.2 (2019-07-19)
