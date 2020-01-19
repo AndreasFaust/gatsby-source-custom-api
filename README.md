@@ -92,6 +92,46 @@ module.exports = {
 };
 ```
 
+## Multiple Sources? Multiple Instances!
+
+If you have multiple sources for your API in your project, just instantiate the plugin multiple times. Just be sure to set a different `rootKey` for every instance. 
+
+**Connect different APIs**
+You can connect the different APIs with `@link`. Find out more about this at https://www.gatsbyjs.org/docs/schema-customization/#foreign-key-fields.
+
+```javascript
+module.exports = {
+    plugins: [
+        {
+            resolve: "gatsby-source-custom-api",
+            options: {
+                url: "https://my-first-api.com",
+                rootKey: 'authors',
+                schemas:  {
+                    authors: `
+                        name: String
+                        description: String
+                    `
+                }
+            }
+        },
+        {
+            resolve: "gatsby-source-custom-api",
+            options: {
+                url: "https://my-second-api.com",
+                rootKey: 'posts',
+                schemas:  {
+                    posts: `
+                        text: String
+                        authors: authors @link(by: "name")
+                    `
+                }
+            }
+        }
+    ]
+};
+```
+
 ## Images
 
 `Gatsby Source Custom API` automatically downloads your image-files, so you can use them with **[Gatsby Image](https://www.gatsbyjs.org/packages/gatsby-image/)**.
