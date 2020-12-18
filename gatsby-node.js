@@ -16,13 +16,14 @@ exports.sourceNodes = async (
   const { createNode, createTypes, touchNode } = actions
   const {
     url,
+    headers,
     rootKey = 'customAPI',
     imageKeys = ['image'],
     schemas = {}
   } = configOptions
 
   const URL = getUrl(process.env.NODE_ENV, url)
-  const data = await fetch(URL).then(res => res.json())
+  const data = await fetch(URL, { headers }).then(res => res.json()).catch(err => console.log(err))
 
   const typeDefs = getTypeDefs(schemas, imageKeys)
   createTypes(typeDefs)
