@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "gatsby-source-filesystem": "^2.0.29",
-        "node-fetch": "^2.3.0",
+        "node-fetch": "^2.6.1",
         "uuid": "^3.3.2"
     },
     "devDependencies": {
