@@ -48,6 +48,7 @@ function extensionIsValid (url) {
     case 'jpg':
     case 'jpeg':
     case 'png':
+    case 'gif':
       return true
     default:
       return false
