@@ -1,3 +1,9 @@
+#### 2.2.1 (2021-08-12)
+
+##### Other Changes
+
+*  Added gif to supported image ext. ([66aa36ab](https://github.com/AndreasFaust/gatsby-source-custom-api/commit/66aa36ab7e63ecf482f115b601658226b28474af))
+
 ### 2.2.0 (2020-12-28)
 
 #### 2.1.4 (2020-01-19)
