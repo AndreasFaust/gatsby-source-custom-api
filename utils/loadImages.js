@@ -11,12 +11,14 @@ async function createImageNodes ({
   store,
   cache,
   imageName,
-  imageCacheKey
+  imageCacheKey,
+  auth
 }) {
   let fileNode
   try {
     fileNode = await createRemoteFileNode({
       url: entity.data.url,
+      auth: { htaccess_user: auth.username, htaccess_pass:  auth.password }
       store,
       cache,
       createNode,
@@ -98,7 +100,8 @@ async function loadImages ({
         store,
         cache,
         imageName,
-        imageCacheKey
+        imageCacheKey,
+        auth
       })
     })
   )
