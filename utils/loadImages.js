@@ -61,7 +61,7 @@ function extensionIsValid (url) {
 }
 
 async function loadImages ({
-  entities, imageKeys, createNode, createNodeId, store, cache, touchNode
+  entities, imageKeys, createNode, createNodeId, store, cache, touchNode, auth
 }) {
   return Promise.all(
     entities.map(async (entity) => {
