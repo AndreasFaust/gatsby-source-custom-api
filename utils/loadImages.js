@@ -27,8 +27,11 @@ async function createImageNodes ({
   }
   if (fileNode) {
     await cache.set(imageCacheKey, {
-      fileNodeID: fileNode.id,
-      modified: entity.data.modified
+      id: fileNode.id,
+      modified: entity.data.modified,
+      internal: {
+          type: entity.name
+      }
     })
     console.log('Image downloaded: ' + imageName)
     return {
@@ -77,14 +80,14 @@ async function loadImages ({
         entity.data.modified &&
         entity.data.modified === cachedImage.modified
       ) {
-        const { fileNodeID } = cachedImage
-        touchNode({ nodeId: fileNodeID })
+        const { id } = cachedImage
+        touchNode(cachedImage)
         console.log('Image from Cache: ' + imageName)
         return Promise.resolve({
           ...entity,
           links: {
             ...entity.links,
-            local___NODE: fileNodeID
+            local___NODE: id
           }
         })
       }
