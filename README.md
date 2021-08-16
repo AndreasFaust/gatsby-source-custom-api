@@ -28,7 +28,8 @@ module.exports = {
 | **Name**  | **Type**         | **Description**                                                                                                                                                                                         |
 | :-------- | :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | url       | object or string | `Required.` Url of your API as a string. If you have two different APIs for development and production, define an object with the keys `production` and `development`.                                  |
-| headers       | object | Request headers. Format is the identical to that accepted by the Headers constructor. See https://www.npmjs.com/package/node-fetch                                  |
+| headers       | object | Request headers. Format is the identical to that accepted by the Headers constructor. See https://www.npmjs.com/package/node-fetch
+| auth       | object | `Optional`. Define the auth for your API in the following format: `{ username: "username", password: "password" }`.                                  |
 | rootKey   | string           | `Optional.` Name your API.                                                                                                                                                                              |
 | imageKeys | array            | Define the keys of image objects. These must have a childkey called `url`, which is a string that defines the path to an image file. Gatsby-Images are added as childkey `local`. Default: `['image']`. |
 | schemas   | object           | Define default-schemas for the objects of your API. See "Provide Default Schemas" for more information.                                                                                                 |
@@ -95,7 +96,7 @@ module.exports = {
 
 ## Multiple Sources? Multiple Instances!
 
-If you have multiple sources for your API in your project, just instantiate the plugin multiple times. Just be sure to set a different `rootKey` for every instance. 
+If you have multiple sources for your API in your project, just instantiate the plugin multiple times. Just be sure to set a different `rootKey` for every instance.
 
 **Connect different APIs**
 You can connect the different APIs with `@link`. Find out more about this at https://www.gatsbyjs.org/docs/schema-customization/#foreign-key-fields.
