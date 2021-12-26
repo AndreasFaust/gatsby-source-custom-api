@@ -18,7 +18,7 @@ async function createImageNodes ({
   try {
     fileNode = await createRemoteFileNode({
       url: entity.data.url,
-      auth: { htaccess_user: auth.username, htaccess_pass:  auth.password },
+      auth: auth && { htaccess_user: auth.username, htaccess_pass:  auth.password },
       store,
       cache,
       createNode,
