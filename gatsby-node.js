@@ -7,7 +7,7 @@ const getUrl = require('./utils/getUrl')
 const getTypeDefs = require('./utils/getTypeDefs')
 const buildNode = require('./utils/buildNode')
 
-exports.sourceNodes = async (
+exports.createSchemaCustomization = async (
   {
     actions, createNodeId, createContentDigest, store, cache
   },
