@@ -48,7 +48,7 @@ async function createImageNodes ({
 }
 
 function extensionIsValid (url) {
-  const ext = url.split('.').pop().split('/')[0]
+  const ext = url.split(/[#?]/)[0].split('.').pop()
   switch (ext) {
     case 'jpg':
     case 'jpeg':
