@@ -7,13 +7,25 @@ const getUrl = require('./utils/getUrl')
 const getTypeDefs = require('./utils/getTypeDefs')
 const buildNode = require('./utils/buildNode')
 
-exports.createSchemaCustomization = async (
+
+exports.createSchemaCustomization = async ({ actions }, configOptions) => {
+  const { createTypes } = actions;
+  const { 
+    imageKeys = ["image"], 
+    schemas = {} 
+  } = configOptions;
+
+  const typeDefs = getTypeDefs(schemas, imageKeys);
+  createTypes(typeDefs);
+};
+
+exports.sourceNodes = async (
   {
     actions, createNodeId, createContentDigest, store, cache
   },
   configOptions
 ) => {
-  const { createNode, createTypes, touchNode } = actions
+  const { createNode, touchNode } = actions
   const {
     url,
     headers,
@@ -25,9 +37,6 @@ exports.createSchemaCustomization = async (
 
   const URL = getUrl(process.env.NODE_ENV, url)
   const data = await fetch(URL, { headers }).then(res => res.json()).catch(err => console.log(err))
-
-  const typeDefs = getTypeDefs(schemas, imageKeys)
-  createTypes(typeDefs)
 
   // build entities and correct schemas, where necessary
   let entities = flattenEntities(createNodeEntities({
